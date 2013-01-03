@@ -3,6 +3,10 @@
 * Haller.js v1.0
 * sercaneraslan.com
 *
+* Kullanımı örnekleri:
+* console.log(Haller.init("sercan","de"));
+* console.log(Haller.init("Murat","iyelik"));
+* console.log(Haller.init("osman","i"));
 */
 var Haller = {};
 
@@ -89,5 +93,3 @@ Haller.init = function(isim, hal){
 
     return isim + "'" + ek;
 }
-
-console.log(Haller.init("sercan","de"));
