@@ -1,6 +1,6 @@
 /*
 *
-* Haller.js v1.0
+* Haller.js v2.0
 * sercaneraslan.com
 *
 * Kullanımı örnekleri:
@@ -8,88 +8,61 @@
 * console.log(Haller.init("Murat","iyelik"));
 * console.log(Haller.init("osman","i"));
 */
-var Haller = {};
+var Haller = (function( undefined ){
+    var sesliHarfler = 'aıeiouöü',
+        sertUnsuzler = 'fstkçşhp',
+        haller = ['iyelik','i','e','de','den'];
 
-Haller.init = function(isim, hal){
-    var isim = isim.charAt(0).toUpperCase() + isim.slice(1),
-        sesliHarfler = ["a", "ı", "o", "u", "e", "i", "ö", "ü"],
-        sertUnsuzler = ["f", "s", "t", "k", "ç", "ş", "h", "p"],
-        sapkaliHarfIsimleri = ["Alp", "Bilal", "Nihal", "Hilal", "Meral", "Seval", "Şevval", "Kemal", "Resul", "Celal", "Cemal"],
-        harf = sesliHarfler.indexOf(isim.substr(isim.length-1,1)),
-        harf2 = sesliHarfler.indexOf(isim.substr(isim.length-2,1)),
-        harf3 = sesliHarfler.indexOf(isim.substr(isim.length-3,1)),
-        sonuSertUnsuz = sertUnsuzler.indexOf(isim.substr(isim.length-1,1)),
-        sapkaliIsimler = sapkaliHarfIsimleri.indexOf(isim),
-        ekinSonHarfi,
-        ekler,
-        ek,
+    return {
+        init: function(isim, hal) {
+            var harfler = isim.split(''),
+                sonHarf = harfler.pop(),
+                sesliIleMiBitiyor = sesliHarfler.indexOf( sonHarf ) > -1,
+                sertUnsuzleMiBitiyor = !sesliIleMiBitiyor && sertUnsuzler.indexOf( sonHarf ) > -1,
+                sonSesli = (function(){
+                    while ( sesliHarfler.indexOf(sonHarf) === -1) {
+                        sonHarf = harfler.pop();
 
-        eklereKararVer = function(){
-            if(hal == "e"){
-                ekler = ["ya", "ye", "a", "e"];
-            }
-            else if(hal == "de"){
-                ekler = ["da", "de", "da", "de"];
-            }
-            else if(hal == "den"){
-                ekler = ["dan", "den", "dan", "den"];
-            }
-            else if(hal == "i"){
-                ekler = ["yı", "yu", "yi", "yü", "ı", "u", "i", "ü"];
-            }
-            else if(hal == "iyelik"){
-                ekler = ["nın", "nun", "nin", "nün", "ın", "un", "in", "ün"];
-            }
-            return ekler;
-        },
-        ekiOlustur = function(a,b,c,d,e,f){
-            if(hal == "i" || hal == "iyelik"){
-                if(harf == 0 || harf == 1){
-                    ek = ekler[a];
-                }
-                else if(harf == 2 || harf == 3){
-                    ek = ekler[b];
-                }
-                else if(harf == 4 || harf == 5){
-                    ek = ekler[c];
-                }
-                else if(harf == 6 || harf == 7){
-                    ek = ekler[d];
-                }
-            }else{
-                (harf <= 3) ? ek = ekler[e] : ek = ekler[f];
-            }
-            return ek;
-        },
-        ekeKararVer = function(){
-            ekiOlustur(0,1,2,3,0,1);
+                        if (sonHarf == undefined) break; // Isimde hic sesli harf yok!
 
-            if(harf == -1){
-                (harf2 == -1) ? harf = harf3 : harf = harf2;
-                ekiOlustur(4,5,6,7,2,3);
+                    }
+
+                    return sesliHarfler.indexOf(sonHarf);
+                })(),
+                ek;
+
+            // Ekin sesli harfine karar verelim
+            if (hal === haller[0] || hal === haller[1]) {
+                ek = (sonSesli === 0 || sonSesli === 1) && 'ı' || // Son sesli harf a veya ı ise
+                     (sonSesli === 2 || sonSesli === 3) && 'i' || // Son sesli harf e veya i ise
+                     (sonSesli === 4 || sonSesli === 5) && 'u' || // Son sesli harf o veya u ise
+                     'ü';   // Son sesli harf ö veya ü ise
+            } else {
+                ek = (sonSesli === 0 || sonSesli === 1 ||
+                        sonSesli === 4 || sonSesli === 5) && 'a' || // Son sesli harf a, ı, o veya u ise
+                    'e';  // Son sesli harf e, i, ö veya ü ise
             }
-            return ek;
-        },
-        sapkaliHarfVarMi = function(){
-            if(sapkaliIsimler !== -1){
-                (hal == "i" || hal == "iyelik") ? ek = ekler[6] : ek = ekler[3];
-            }
-            return ek;
-        },
-        sonuSertUnsuzMu = function(){
-            if(sonuSertUnsuz !== -1){
-                if(hal == "de" || hal == "den"){
-                    ekinSonHarfi = ek.slice(1, 3);
-                    ek = "t" + ekinSonHarfi;
+
+            // Ön ekleri belirleyelim (kaynaştırma harfi)
+            if (sesliIleMiBitiyor) {
+                if (hal === haller[0]) { // iyelik hali ise
+                    ek = 'n' + ek
+                }
+                if (hal === haller[1] || hal === haller[2]) { // i veya e hali ise
+                    ek = 'y' + ek
                 }
             }
-            return ek;
-        };
+            if (hal === haller[3]  || hal === haller[4]) { // de veya den hali ise
+                ek = (sertUnsuzleMiBitiyor ? 't' : 'd') + ek;
+            }
 
-    eklereKararVer();
-    ekeKararVer();
-    sapkaliHarfVarMi();
-    sonuSertUnsuzMu();
+            // Son ekleri belirleyelim
+            if (hal === haller[0] || hal === haller[4]) { // iyelik veya den hali ise
+                ek += 'n'
+            }
 
-    return isim + "'" + ek;
-}
+            // Isimle birlestirip donelim
+            return isim + "'" + ek;
+        }
+    }
+})();
