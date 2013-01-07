@@ -7,7 +7,7 @@
 * console.log(Hal("sercan","de")); > sercan'da
 * console.log(Hal("Murat","iyelik")); > Murat'ın
 * console.log(Hal("osman","i")); > osman'ı
-* console.log(Hal("Alp","de")); > Alp'te
+* console.log(Hal("alp","de")); > alp'te
 * console.log(Hal("Cemal","e")); > Cemal'e
 */
 var Hal = function(isim, hal, undefined) {
