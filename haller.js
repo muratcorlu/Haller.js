@@ -33,7 +33,7 @@ var Hal = function(isim, hal, undefined) {
     for (i in isim) {
         // Eger bu harf sesli ise,
         // sesliler listesine harf sira numarasini ekle,
-        // bu harfin isimdeki siranumarasini sonSesliIndex degiskenine ata
+        // bu harfin isimdeki siranumarasini sonSesliIndex degiskenine ata (integer'a cevir)
         (code = sesliHarfler.indexOf(isim[i])) > -1 && (sesliler.push(code) & (sonSesliIndex = ~~i));
         // bu harfi sonHarf degiskenine al
         sonHarf = isim[i];
@@ -55,16 +55,16 @@ var Hal = function(isim, hal, undefined) {
     }
 
     // Ekin sesli harfine karar verelim
-    if (hal == iyelik || hal == iHali) {
-        ek = (sonSesli == 0 || sonSesli == 1) && istisna ? 'i' : 'ı' || // Son sesli harf a veya ı ise
+    ek = (hal == iyelik || hal == iHali) ? // iyelik veya i hali istenmisse
+            ((sonSesli == 0 || sonSesli == 1) && istisna ? 'i' : 'ı' || // Son sesli harf a veya ı ise
              (sonSesli == 2 || sonSesli == 3) && 'i' || // Son sesli harf e veya i ise
              (sonSesli == 4 || sonSesli == 5) && istisna ? 'ü' : 'u' || // Son sesli harf o veya u ise
-             'ü';   // Son sesli harf ö veya ü ise
-    } else {
-        ek = (sonSesli == 0 || sonSesli == 1 ||
+             'ü')   // Son sesli harf ö veya ü ise
+        : // e, de veya den hali istenmisse
+            ((sonSesli == 0 || sonSesli == 1 ||
                 sonSesli == 4 || sonSesli == 5) && istisna ? 'e' : 'a' || // Son sesli harf a, ı, o veya u ise
-            'e';  // Son sesli harf e, i, ö veya ü ise
-    }
+            'e');  // Son sesli harf e, i, ö veya ü ise
+
 
     // Ön ekleri belirleyelim (kaynaştırma harfi)
     if ( sonHarf == sonSesli ) { // Sesli ile mi bitiyor
@@ -86,4 +86,4 @@ var Hal = function(isim, hal, undefined) {
 
     // Isimle birlestirip donelim
     return isim + "'" + ek;
-}
+};
