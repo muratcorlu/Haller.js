@@ -3,7 +3,7 @@ Haller.js
 
 **Haller.js**, Türkçe isimlere hâl ve iyelik ekleri getirmek için bir javascript fonksiyonudur.
 
-Haller.js projesinin fikir babası @skatersercan'dır.
+Haller.js projesinin fikir babası Sercan Eraslan(@skatersercan)'dır.
 
 ## Kullanımı
 
