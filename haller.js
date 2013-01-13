@@ -28,7 +28,7 @@ var Hal = function(isim, hal) {
         ek = (hal == iyelik || hal == iHali) ? // iyelik veya i hali istenmisse
                 iEkleri[ 'aıeiouöü'.indexOf(sonSesli) + istisna ]
             : // e, de veya den hali istenmisse
-                /[aıou]/.test(sonSesli) && istisna ? 'e' : 'a' || // Son sesli harf a, ı, o veya u ise
+                /[aıou]/.test(sonSesli) && (istisna ? 'e' : 'a') || // Son sesli harf a, ı, o veya u ise
                 'e';  // Son sesli harf e, i, ö veya ü ise
 
 
