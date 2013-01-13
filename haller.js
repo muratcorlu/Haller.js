@@ -17,7 +17,7 @@ var Hal = function(isim, hal) {
         deHali = 'de',
         denHali = 'den',
         iEkleri = 'ııiiuuüü', // iyelik ve i hali ekleri
-        sonHarf = /.$/.exec(isim).join(),
+        sonHarf = isim[isim.length - 1],
 
         // Sapkali harf istisnasi mevcut mu? Orn: Alp, Resul, Cemal...
         istisna = ~~/[ei][^ıüoö]*[au]l$|alp$/.test(isim) * 2, // 0 veya 2 degeri cikar
