@@ -1,28 +1,36 @@
-/*
-*
-* Haller.js v2.1
-* sercaneraslan.com
-*
-* Kullanımı örnekleri:
-* console.log(Hal("sercan","de")); > sercan'da
-* console.log(Hal("Murat","iyelik")); > Murat'ın
-* console.log(Hal("osman","i")); > osman'ı
-* console.log(Hal("alp","de")); > alp'te
-* console.log(Hal("Cemal","e")); > Cemal'e
-*/
+/**
+ * Haller.js v2.2
+ * sercaneraslan.com
+ *
+ * Kullanımı örnekleri:
+ * console.log(Hal("sercan","de")); > sercan'da
+ * console.log(Hal("Murat","iyelik")); > Murat'ın
+ * console.log(Hal("osman","i")); > osman'ı
+ * console.log(Hal("alp","de")); > alp'te
+ * console.log(Hal("Cemal","e")); > Cemal'e
+ */
 var Hal = function(isim, hal) {
-    var iyelik = 'iyelik',
+    var caseMap = {
+            "I":"ı",
+            "İ":"i",
+            "Ş":"ş",
+            "Ğ":"ğ"
+        },
+        isimKucukHarf = (isim.replace(/[IİŞĞ]/g, function(s) {
+                return caseMap[s];
+            })).toLowerCase(),
+        iyelik = 'iyelik',
         iHali = 'i',
         eHali = 'e',
         deHali = 'de',
         denHali = 'den',
         iEkleri = 'ııiiuuüü', // iyelik ve i hali ekleri
-        sonHarf = isim[isim.length - 1],
+        sonHarf = isimKucukHarf.slice(-1),
 
         // Sapkali harf istisnasi mevcut mu? Orn: Alp, Resul, Cemal...
-        istisna = ~~/[ei][^ıüoö]*[au]l$|alp$/.test(isim) * 2, // 0 veya 2 degeri cikar
+        istisna = ~~/[ei][^ıüoö]*[au]l$|alp$/.test(isimKucukHarf) * 2, // 0 veya 2 degeri cikar
         // seslilerden sonuncusunu al
-        sonSesli = isim.match(/[aıeiouöü]/g).pop(),
+        sonSesli = isimKucukHarf.match(/[aıeiouöü]/g).pop(),
 
         // Ekin sesli harfine karar verelim
         ek = (hal == iyelik || hal == iHali) ? // iyelik veya i hali istenmisse
