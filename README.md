@@ -17,6 +17,4 @@ console.log(Hal("Cemal","e")); > Cemal'e
 
 ## Eksikler
 
-* Büyük küçük harf duyarlı çalıştığından ismin küçük harflerle(en azından son hecesinin) verilmesi gerekiyor.
 * Şapkalı harfler(â, î, û) algılanmıyor.
-
